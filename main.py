@@ -1,9 +1,11 @@
+# import necessary libraries
 import logging
 import logging.handlers
 import os
 
 import requests
 
+# initiate logger
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 logger_file_handler = logging.handlers.RotatingFileHandler(
@@ -16,19 +18,21 @@ formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(messag
 logger_file_handler.setFormatter(formatter)
 logger.addHandler(logger_file_handler)
 
+# error handling
 try:
-    SOME_SECRET = os.environ["SOME_SECRET"]
+    CHWL_SECRET = os.environ["CHWL_SECRET"]
 except KeyError:
-    SOME_SECRET = "Token not available!"
+    CHWL_SECRET = "Token not available!"
     #logger.info("Token not available!")
     #raise
 
 
 if __name__ == "__main__":
-    logger.info(f"Token value: {SOME_SECRET}")
+    logger.info(f"Token value: {CHWL_SECRET}")
 
-    r = requests.get('https://weather.talkpython.fm/api/weather/?city=Berlin&country=DE')
+    # request weather data for Cameron Highlands, Tanah Rata, Pahang, MY
+    r = requests.get('https://weather.talkpython.fm/api/weather/?city=Tanah%20Rata&country=MY')
     if r.status_code == 200:
         data = r.json()
         temperature = data["forecast"]["temp"]
-        logger.info(f'Weather in Berlin: {temperature}')
+        logger.info(f'Weather in Cameron Highlands: {temperature}')
